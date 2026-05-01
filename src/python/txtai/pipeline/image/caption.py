@@ -10,20 +10,36 @@ try:
 except ImportError:
     PIL = False
 
-from ..hfpipeline import HFPipeline
+from transformers import AutoModelForImageTextToText, AutoImageProcessor, AutoTokenizer
+
+from ..hfmodel import HFModel
 
 
-class Caption(HFPipeline):
+class Caption(HFModel):
     """
     Constructs captions for images.
     """
 
-    def __init__(self, path=None, quantize=False, gpu=True, model=None, **kwargs):
+    def __init__(self, path=None, quantize=False, gpu=True, batch=64, **kwargs):
         if not PIL:
             raise ImportError('Captions pipeline is not available - install "pipeline" extra to enable')
 
+        # Default model
+        path = path if path else "ydshieh/vit-gpt2-coco-en"
+
         # Call parent constructor
-        super().__init__("image-to-text", path, quantize, gpu, model, **kwargs)
+        super().__init__(path, quantize, gpu, batch)
+
+        # Captioning model
+        if isinstance(path, tuple):
+            self.model, self.tokenizer, self.processor = path
+        else:
+            self.model = AutoModelForImageTextToText.from_pretrained(path, **kwargs)
+            self.tokenizer = AutoTokenizer.from_pretrained(path)
+            self.processor = AutoImageProcessor.from_pretrained(path)
+
+        # Move model to device
+        self.model = self.model.to(self.device)
 
     def __call__(self, images):
         """
@@ -47,9 +63,14 @@ class Caption(HFPipeline):
 
         # Get and clean captions
         captions = []
-        for result in self.pipeline(values):
-            text = " ".join([r["generated_text"] for r in result]).strip()
-            captions.append(text)
+        for image in values:
+            # Extract pixels
+            pixels = self.processor(images=image, return_tensors="pt").to(self.device).pixel_values
+
+            # Generate the caption
+            outputs = self.model.generate(pixel_values=pixels, max_new_tokens=256)
+            caption = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0].strip()
+            captions.append(caption)
 
         # Return single element if single element passed in
         return captions[0] if not isinstance(images, list) else captions
