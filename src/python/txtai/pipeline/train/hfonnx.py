@@ -61,7 +61,7 @@ class HFOnnx(Tensors):
 
         # Export model to ONNX
         export(
-            model,
+            ModelWrapper(model),
             (dummy,),
             output,
             opset_version=opset,
@@ -138,7 +138,7 @@ class HFOnnx(Tensors):
 
         config = {
             "default": (OrderedDict({"last_hidden_state": {0: "batch", 1: "sequence"}}), AutoModel.from_pretrained),
-            "pooling": (OrderedDict({"embeddings": {0: "batch", 1: "sequence"}}), lambda x: PoolingOnnx(x, -1)),
+            "pooling": (OrderedDict({"embeddings": {0: "batch", 1: "sequence"}}), lambda x: PoolingFactory.create({"path": x, "device": -1})),
             "question-answering": (
                 OrderedDict(
                     {
@@ -157,29 +157,27 @@ class HFOnnx(Tensors):
         return (inputs,) + config[task]
 
 
-class PoolingOnnx(nn.Module):
+class ModelWrapper(nn.Module):
     """
-    Extends Pooling methods to name inputs to model, which is required to export to ONNX.
+    Wraps an model to control named inputs for export.
     """
 
-    def __init__(self, path, device):
+    def __init__(self, model):
         """
-        Creates a new PoolingOnnx instance.
+        Creates a new ModelWrapper.
 
         Args:
-            path: path to model, accepts Hugging Face model hub id or local path
-            device: tensor device id
+            model: model to export
         """
 
         super().__init__()
 
-        # Create pooling method based on configuration
-        self.model = PoolingFactory.create({"path": path, "device": device})
+        self.model = model.eval()
 
     # pylint: disable=W0221
     def forward(self, input_ids=None, attention_mask=None, token_type_ids=None):
         """
-        Runs inputs through pooling model and returns outputs.
+        Runs inputs through model and returns outputs.
 
         Args:
             inputs: model inputs

@@ -273,8 +273,8 @@ class HFTrainer(Tensors):
             return AutoModelForSeq2SeqLM.from_pretrained(base, config=config, quantization_config=quantization)
         if task == "token-detection":
             return TokenDetection(
-                AutoModelForMaskedLM.from_pretrained(base, config=config, quantization_config=quantization),
-                AutoModelForPreTraining.from_pretrained(base, config=config, quantization_config=quantization),
+                AutoModelForMaskedLM.from_pretrained(base, config=config, quantization_config=quantization, attn_implementation="eager"),
+                AutoModelForPreTraining.from_pretrained(base, config=config, quantization_config=quantization, attn_implementation="eager"),
                 tokenizer,
             )
 

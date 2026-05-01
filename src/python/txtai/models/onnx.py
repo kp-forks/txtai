@@ -122,7 +122,9 @@ class OnnxModel(PreTrainedModel):
                     value = value.cpu().numpy()
 
                 # Cast to numpy array if not already one
-                features[key] = np.asarray(value)
+                # Only add valid model inputs
+                if any(x.name == key for x in self.model.get_inputs()):
+                    features[key] = np.asarray(value)
 
         return features
 

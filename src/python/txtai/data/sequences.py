@@ -38,9 +38,8 @@ class Sequences(Data):
         source = [self.prefix + x if self.prefix else x for x in data[source]]
         inputs = self.tokenizer(source, max_length=self.maxlength, padding=False, truncation=True)
 
-        # Tokenize target
-        with self.tokenizer.as_target_tokenizer():
-            targets = self.tokenizer(data[target], max_length=self.maxlength, padding=False, truncation=True)
+        # Tokenize targets
+        targets = self.tokenizer(data[target], max_length=self.maxlength, padding=False, truncation=True)
 
         # Combine inputs
         inputs["labels"] = targets["input_ids"]
