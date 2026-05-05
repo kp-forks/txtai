@@ -11,9 +11,10 @@ except ImportError:
     GLINER = False
 
 from huggingface_hub.errors import HFValidationError
-from transformers.utils import cached_file
 
 from ...models import Models
+from ...util import Download
+
 from ..hfpipeline import HFPipeline
 
 
@@ -86,7 +87,7 @@ class Entity(HFPipeline):
 
         try:
             # Test if this model has a gliner_config.json file
-            return cached_file(path_or_repo_id=path, filename="gliner_config.json") is not None
+            return Download()(path, "gliner_config.json") is not None
 
         # Ignore this error - invalid repo or directory
         except (HFValidationError, OSError):

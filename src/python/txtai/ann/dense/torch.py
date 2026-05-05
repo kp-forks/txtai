@@ -22,10 +22,10 @@ except ImportError:
 
 from .numpy import NumPy
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import TransformersLib
 
-torch = TorchLib().torch()
+torch = TransformersLib().torch()
 
 
 class Torch(NumPy):

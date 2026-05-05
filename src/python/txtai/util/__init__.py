@@ -2,7 +2,8 @@
 Utility imports
 """
 
+from .download import Download
 from .resolver import Resolver
 from .sparsearray import SparseArray
 from .template import TemplateFormatter
-from .torchlib import TorchLib
+from .transformerslib import TransformersLib

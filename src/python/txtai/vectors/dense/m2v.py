@@ -5,7 +5,6 @@ Model2Vec module
 import json
 
 from huggingface_hub.errors import HFValidationError
-from transformers.utils import cached_file
 
 # Conditional import
 try:
@@ -15,6 +14,7 @@ try:
 except ImportError:
     MODEL2VEC = False
 
+from ...util import Download
 from ..base import Vectors
 
 
@@ -37,7 +37,7 @@ class Model2Vec(Vectors):
 
         try:
             # Download file and parse JSON
-            path = cached_file(path_or_repo_id=path, filename="config.json")
+            path = Download()(path, "config.json")
             if path:
                 with open(path, encoding="utf-8") as f:
                     config = json.load(f)

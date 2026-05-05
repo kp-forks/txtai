@@ -10,9 +10,12 @@ try:
 except ImportError:
     PIL = False
 
-from transformers import AutoModelForImageTextToText, AutoImageProcessor, AutoTokenizer
-
 from ..hfmodel import HFModel
+
+from ...util import TransformersLib
+
+# Conditional imports
+transformers = TransformersLib().transformers()
 
 
 class Caption(HFModel):
@@ -34,9 +37,9 @@ class Caption(HFModel):
         if isinstance(path, tuple):
             self.model, self.tokenizer, self.processor = path
         else:
-            self.model = AutoModelForImageTextToText.from_pretrained(path, **kwargs)
-            self.tokenizer = AutoTokenizer.from_pretrained(path)
-            self.processor = AutoImageProcessor.from_pretrained(path)
+            self.model = transformers.AutoModelForImageTextToText.from_pretrained(path, **kwargs)
+            self.tokenizer = transformers.AutoTokenizer.from_pretrained(path)
+            self.processor = transformers.AutoImageProcessor.from_pretrained(path)
 
         # Move model to device
         self.model = self.model.to(self.device)

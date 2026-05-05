@@ -6,8 +6,6 @@ import os
 
 import numpy as np
 
-from huggingface_hub import hf_hub_download
-
 # Conditional import
 try:
     import llama_cpp as llama
@@ -15,6 +13,8 @@ try:
     LLAMA_CPP = True
 except ImportError:
     LLAMA_CPP = False
+
+from ...util import Download
 
 from ..base import Vectors
 
@@ -47,7 +47,7 @@ class LlamaCpp(Vectors):
 
     def loadmodel(self, path):
         # Check if this is a local path, otherwise download from the HF Hub
-        path = path if os.path.exists(path) else self.download(path)
+        path = path if os.path.exists(path) else Download()(path)
 
         # Additional model arguments
         modelargs = self.config.get("vectors", {})
@@ -71,23 +71,3 @@ class LlamaCpp(Vectors):
         # Generate embeddings and return as a NumPy array
         # llama-cpp-python has it's own batching built-in using n_batch parameter
         return np.array(self.model.embed(data), dtype=np.float32)
-
-    def download(self, path):
-        """
-        Downloads path from the Hugging Face Hub.
-
-        Args:
-            path: full model path
-
-        Returns:
-            local cached model path
-        """
-
-        # Split into parts
-        parts = path.split("/")
-
-        # Calculate repo id split
-        repo = 2 if len(parts) > 2 else 1
-
-        # Download and cache file
-        return hf_hub_download(repo_id="/".join(parts[:repo]), filename="/".join(parts[repo:]))

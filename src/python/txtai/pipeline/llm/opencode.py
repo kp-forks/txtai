@@ -2,8 +2,6 @@
 OpenCode module
 """
 
-from transformers.utils import cached_file
-
 # Conditional import
 try:
     import httpx
@@ -14,6 +12,8 @@ except ImportError:
 
 
 from .generation import Generation
+
+from ...util import Download
 
 
 class OpenCode(Generation):
@@ -49,7 +49,7 @@ class OpenCode(Generation):
 
         # pylint: disable=W0702
         try:
-            return cached_file(path_or_repo_id=path, filename="config.json") is not None if "/" in path else False
+            return Download()(path, "config.json") is not None if "/" in path else False
         except:
             return False
 

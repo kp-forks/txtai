@@ -1,5 +1,5 @@
 """
-Torch module tests
+Transformers module tests
 """
 
 import sys
@@ -9,18 +9,20 @@ import unittest
 import txtai
 
 
-class TestTorch(unittest.TestCase):
+class TestTransformers(unittest.TestCase):
     """
-    Simulates torch not being installed. Even though torch is a required dependency, txtai can operate without it gracefully.
+    Simulates transformers not being installed.
     """
 
     @classmethod
     def setUpClass(cls):
         """
-        Simulate torch not being installed
+        Simulate transformers not being installed
         """
 
         modules = [
+            "transformers",
+            "transformers.configuration_utils",
             "transformers.modeling_utils",
             "transformers.modeling_outputs",
             "torch",
@@ -58,21 +60,23 @@ class TestTorch(unittest.TestCase):
             else:
                 del sys.modules[key]
 
-    def testTorch(self):
+    def testTransformers(self):
         """
-        Test torch not installed
+        Test transformers not installed
         """
 
-        from txtai.util import TorchLib
+        from txtai.util import TransformersLib
 
-        torchlib = TorchLib()
+        lib = TransformersLib()
 
-        # Test torch stubs
-        self.assertTrue(torchlib.dataset().__module__.endswith("torchlib"))
-        self.assertTrue(torchlib.module().__module__.endswith("torchlib"))
-        self.assertTrue(torchlib.pretrained().__module__.endswith("torchlib"))
-        self.assertTrue(torchlib.torch())
+        # Test transformers stubs
+        for x in [lib.arguments(), lib.config(), lib.dataset(), lib.module(), lib.model()]:
+            self.assertTrue(x.__module__.endswith("transformerslib"))
 
         # pylint: disable=W0106
         with self.assertRaises(ImportError):
-            torchlib.torch().device
+            lib.transformers().AutoModel
+
+        # pylint: disable=W0106
+        with self.assertRaises(ImportError):
+            lib.torch().device

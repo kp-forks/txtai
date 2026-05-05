@@ -12,19 +12,16 @@ except ImportError:
 
 import numpy as np
 
-import transformers
-
-from transformers import AutoConfig
-from transformers.configuration_utils import PretrainedConfig
-
 from .registry import Registry
 
-# Conditional torch imports
-from ..util import TorchLib
+# Conditional imports
+from ..util import TransformersLib
 
-torchlib = TorchLib()
-torch = torchlib.torch()
-PreTrainedModel = torchlib.pretrained()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
+transformers = transformerslib.transformers()
+PretrainedConfig = transformerslib.config()
+PreTrainedModel = transformerslib.model()
 
 
 # pylint: disable=W0223
@@ -46,7 +43,7 @@ class OnnxModel(PreTrainedModel):
         if not ONNX_RUNTIME:
             raise ImportError('onnxruntime is not available - install "model" extra to enable')
 
-        super().__init__(AutoConfig.from_pretrained(config) if config else OnnxConfig())
+        super().__init__(transformers.AutoConfig.from_pretrained(config) if config else OnnxConfig())
 
         # Create ONNX session
         self.model = ort.InferenceSession(model, ort.SessionOptions(), self.providers())

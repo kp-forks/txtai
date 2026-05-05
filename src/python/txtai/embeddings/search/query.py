@@ -2,7 +2,10 @@
 Query module
 """
 
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, T5ForConditionalGeneration
+# Conditional imports
+from ...util import TransformersLib
+
+transformers = TransformersLib().transformers()
 
 
 class Query:
@@ -20,11 +23,11 @@ class Query:
             maxlength: max sequence length to generate
         """
 
-        self.tokenizer = AutoTokenizer.from_pretrained(path)
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(path)
+        self.tokenizer = transformers.AutoTokenizer.from_pretrained(path)
+        self.model = transformers.AutoModelForSeq2SeqLM.from_pretrained(path)
 
         # Default prefix if not provided for T5 models
-        if not prefix and isinstance(self.model, T5ForConditionalGeneration):
+        if not prefix and isinstance(self.model, transformers.T5ForConditionalGeneration):
             prefix = "translate English to SQL: "
 
         self.prefix = prefix

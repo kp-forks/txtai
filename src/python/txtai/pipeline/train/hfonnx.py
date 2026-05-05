@@ -15,17 +15,16 @@ try:
 except ImportError:
     ONNX_RUNTIME = False
 
-from transformers import AutoModel, AutoModelForQuestionAnswering, AutoModelForSequenceClassification, AutoTokenizer
-
 from ...models import PoolingFactory
 from ..tensors import Tensors
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import TransformersLib
 
-torchlib = TorchLib()
-torch = torchlib.torch()
-Module = torchlib.module()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
+transformers = transformerslib.transformers()
+Module = transformerslib.module()
 
 
 class HFOnnx(Tensors):
@@ -55,7 +54,7 @@ class HFOnnx(Tensors):
             model = model.cpu()
         else:
             model = model(path)
-            tokenizer = AutoTokenizer.from_pretrained(path)
+            tokenizer = transformers.AutoTokenizer.from_pretrained(path)
 
         # Generate dummy inputs
         dummy = dict(tokenizer(["test inputs"], return_tensors="pt"))
@@ -141,7 +140,7 @@ class HFOnnx(Tensors):
         )
 
         config = {
-            "default": (OrderedDict({"last_hidden_state": {0: "batch", 1: "sequence"}}), AutoModel.from_pretrained),
+            "default": (OrderedDict({"last_hidden_state": {0: "batch", 1: "sequence"}}), transformers.AutoModel.from_pretrained),
             "pooling": (OrderedDict({"embeddings": {0: "batch", 1: "sequence"}}), lambda x: PoolingFactory.create({"path": x, "device": -1})),
             "question-answering": (
                 OrderedDict(
@@ -150,9 +149,9 @@ class HFOnnx(Tensors):
                         "end_logits": {0: "batch", 1: "sequence"},
                     }
                 ),
-                AutoModelForQuestionAnswering.from_pretrained,
+                transformers.AutoModelForQuestionAnswering.from_pretrained,
             ),
-            "text-classification": (OrderedDict({"logits": {0: "batch"}}), AutoModelForSequenceClassification.from_pretrained),
+            "text-classification": (OrderedDict({"logits": {0: "batch"}}), transformers.AutoModelForSequenceClassification.from_pretrained),
         }
 
         # Aliases

@@ -2,9 +2,10 @@
 Tokens module
 """
 
-from ..util import TorchLib
+# Conditional imports
+from ..util import TransformersLib
 
-Dataset = TorchLib().dataset()
+Dataset = TransformersLib().dataset()
 
 
 class Tokens(Dataset):

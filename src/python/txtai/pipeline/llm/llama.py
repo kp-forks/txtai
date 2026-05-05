@@ -4,8 +4,6 @@ Llama module
 
 import os
 
-from huggingface_hub import hf_hub_download
-
 # Conditional import
 try:
     import llama_cpp as llama
@@ -13,6 +11,8 @@ try:
     LLAMA_CPP = True
 except ImportError:
     LLAMA_CPP = False
+
+from ...util import Download
 
 from .generation import Generation
 
@@ -43,7 +43,7 @@ class LlamaCpp(Generation):
             raise ImportError('llama.cpp is not available - install "pipeline" extra to enable')
 
         # Check if this is a local path, otherwise download from the HF Hub
-        path = path if os.path.exists(path) else self.download(path)
+        path = path if os.path.exists(path) else Download()(path)
 
         # Create llama.cpp instance
         self.llm = self.create(path, **kwargs)
@@ -55,26 +55,6 @@ class LlamaCpp(Generation):
                 if isinstance(text, list)
                 else self.prompt(text, maxlength, stream, stop, **kwargs)
             )
-
-    def download(self, path):
-        """
-        Downloads path from the Hugging Face Hub.
-
-        Args:
-            path: full model path
-
-        Returns:
-            local cached model path
-        """
-
-        # Split into parts
-        parts = path.split("/")
-
-        # Calculate repo id split
-        repo = 2 if len(parts) > 2 else 1
-
-        # Download and cache file
-        return hf_hub_download(repo_id="/".join(parts[:repo]), filename="/".join(parts[repo:]))
 
     def create(self, path, **kwargs):
         """

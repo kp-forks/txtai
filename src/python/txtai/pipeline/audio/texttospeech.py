@@ -25,15 +25,15 @@ import yaml
 import numpy as np
 
 from huggingface_hub.errors import HFValidationError
-from transformers import SpeechT5Processor
-from transformers.utils import cached_file
 
 from ..base import Pipeline
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import Download, TransformersLib
 
-torch = TorchLib().torch()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
+transformers = transformerslib.transformers()
 
 # Logging configuration
 logger = logging.getLogger(__name__)
@@ -135,7 +135,7 @@ class TextToSpeech(Pipeline):
         exists = False
         try:
             # Check if file exists
-            exists = cached_file(path_or_repo_id=path, filename=name) is not None
+            exists = Download()(path, name) is not None
         except (HFValidationError, OSError):
             return False
 
@@ -252,8 +252,9 @@ class ESPnet(SpeechPipeline):
         """
 
         # Get path to model and config
-        config = cached_file(path_or_repo_id=path, filename="config.yaml")
-        model = cached_file(path_or_repo_id=path, filename="model.onnx")
+        download = Download()
+        config = download(path, "config.yaml")
+        model = download(path, "model.onnx")
 
         # Read yaml config
         with open(config, "r", encoding="utf-8") as f:
@@ -327,8 +328,9 @@ class Kokoro(SpeechPipeline):
         """
 
         # Get path to model and config
-        voices = cached_file(path_or_repo_id=path, filename="voices.json")
-        model = cached_file(path_or_repo_id=path, filename="model.onnx")
+        download = Download()
+        voices = download(path, "voices.json")
+        model = download(path, "model.onnx")
 
         # Read voices config
         with open(voices, "r", encoding="utf-8") as f:
@@ -406,12 +408,13 @@ class SpeechT5(SpeechPipeline):
             providers: list of supported ONNX providers
         """
 
-        self.encoder = ort.InferenceSession(cached_file(path_or_repo_id=path, filename="encoder_model.onnx"), providers=providers)
-        self.decoder = ort.InferenceSession(cached_file(path_or_repo_id=path, filename="decoder_model_merged.onnx"), providers=providers)
-        self.vocoder = ort.InferenceSession(cached_file(path_or_repo_id=path, filename="decoder_postnet_and_vocoder.onnx"), providers=providers)
+        download = Download()
+        self.encoder = ort.InferenceSession(download(path, "encoder_model.onnx"), providers=providers)
+        self.decoder = ort.InferenceSession(download(path, "decoder_model_merged.onnx"), providers=providers)
+        self.vocoder = ort.InferenceSession(download(path, "decoder_postnet_and_vocoder.onnx"), providers=providers)
 
-        self.processor = SpeechT5Processor.from_pretrained(path)
-        self.defaultspeaker = np.load(cached_file(path_or_repo_id=path, filename="speaker.npy"), allow_pickle=False)
+        self.processor = transformers.SpeechT5Processor.from_pretrained(path)
+        self.defaultspeaker = np.load(download(path, "speaker.npy"), allow_pickle=False)
 
         # Max number of input tokens model can handle
         self.maxtokens = maxtokens

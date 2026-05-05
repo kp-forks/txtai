@@ -4,22 +4,14 @@ Models module
 
 import os
 
-from transformers import (
-    AutoConfig,
-    AutoModel,
-    AutoModelForQuestionAnswering,
-    AutoModelForSeq2SeqLM,
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-)
-from transformers.models.auto.modeling_auto import MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES
-
 from .onnx import OnnxModel
 
-# Conditional torch imports
-from ..util import TorchLib
+# Conditional imports
+from ..util import TransformersLib
 
-torch = TorchLib().torch()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
+transformers = transformerslib.transformers()
 
 
 class Models:
@@ -206,12 +198,12 @@ class Models:
 
         # Transformer models
         models = {
-            "default": AutoModel.from_pretrained,
-            "question-answering": AutoModelForQuestionAnswering.from_pretrained,
-            "summarization": AutoModelForSeq2SeqLM.from_pretrained,
-            "text2text-generation": AutoModelForSeq2SeqLM.from_pretrained,
-            "text-classification": AutoModelForSequenceClassification.from_pretrained,
-            "zero-shot-classification": AutoModelForSequenceClassification.from_pretrained,
+            "default": transformers.AutoModel.from_pretrained,
+            "question-answering": transformers.AutoModelForQuestionAnswering.from_pretrained,
+            "summarization": transformers.AutoModelForSeq2SeqLM.from_pretrained,
+            "text2text-generation": transformers.AutoModelForSeq2SeqLM.from_pretrained,
+            "text-classification": transformers.AutoModelForSequenceClassification.from_pretrained,
+            "zero-shot-classification": transformers.AutoModelForSequenceClassification.from_pretrained,
         }
 
         # Pass modelargs as keyword arguments
@@ -233,7 +225,7 @@ class Models:
             tokenizer
         """
 
-        return AutoTokenizer.from_pretrained(path, **kwargs) if isinstance(path, str) else path
+        return transformers.AutoTokenizer.from_pretrained(path, **kwargs) if isinstance(path, str) else path
 
     @staticmethod
     def task(path, **kwargs):
@@ -253,14 +245,17 @@ class Models:
         if isinstance(path, (list, tuple)) and hasattr(path[0], "config"):
             config = path[0].config
         elif isinstance(path, str):
-            config = AutoConfig.from_pretrained(path, **kwargs)
+            config = transformers.AutoConfig.from_pretrained(path, **kwargs)
+
+        # Image models
+        imagemodels = transformers.models.auto.modeling_auto.MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES
 
         # Attempt to resolve task using configuration
         task = None
         if config:
             architecture = config.architectures[0] if config.architectures else None
             if architecture:
-                if architecture in MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES.values():
+                if architecture in imagemodels.values():
                     task = "vision"
                 elif any(x for x in ["LMHead", "CausalLM"] if x in architecture):
                     task = "language-generation"

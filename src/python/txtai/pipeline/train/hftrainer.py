@@ -5,19 +5,6 @@ Hugging Face Transformers trainer wrapper module
 import os
 import sys
 
-from transformers import (
-    AutoConfig,
-    AutoModelForCausalLM,
-    AutoModelForMaskedLM,
-    AutoModelForQuestionAnswering,
-    AutoModelForPreTraining,
-    AutoModelForSeq2SeqLM,
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-)
-from transformers import DataCollatorForLanguageModeling, DataCollatorForSeq2Seq, Trainer, set_seed
-from transformers import TrainingArguments as HFTrainingArguments
-
 # Conditional import
 try:
     from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_kbit_training
@@ -33,10 +20,13 @@ from ...data import Labels, Questions, Sequences, Texts
 from ...models import Models, TokenDetection
 from ..tensors import Tensors
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import TransformersLib
 
-torch = TorchLib().torch()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
+transformers = transformerslib.transformers()
+HFTrainingArguments = transformerslib.arguments()
 
 
 class HFTrainer(Tensors):
@@ -95,7 +85,7 @@ class HFTrainer(Tensors):
         args = self.parse(args)
 
         # Set seed for model reproducibility
-        set_seed(args.seed)
+        transformers.set_seed(args.seed)
 
         # Load model configuration, tokenizer and max sequence length
         config, tokenizer, maxlength = self.load(base, maxlength)
@@ -123,7 +113,7 @@ class HFTrainer(Tensors):
             collator.model = model
 
         # Build trainer
-        trainer = Trainer(
+        trainer = transformers.Trainer(
             model=model,
             processing_class=tokenizer,
             data_collator=collator,
@@ -185,10 +175,10 @@ class HFTrainer(Tensors):
             config = model.config
         else:
             # Load config
-            config = AutoConfig.from_pretrained(base)
+            config = transformers.AutoConfig.from_pretrained(base)
 
             # Load tokenizer
-            tokenizer = AutoTokenizer.from_pretrained(base)
+            tokenizer = transformers.AutoTokenizer.from_pretrained(base)
 
         # Detect unbounded tokenizer
         Models.checklength(config, tokenizer)
@@ -221,15 +211,15 @@ class HFTrainer(Tensors):
 
         if task == "language-generation":
             process = Texts(tokenizer, columns, maxlength, merge)
-            collator = DataCollatorForLanguageModeling(tokenizer, mlm=False, pad_to_multiple_of=8 if fp16 else None)
+            collator = transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False, pad_to_multiple_of=8 if fp16 else None)
         elif task in ("language-modeling", "token-detection"):
             process = Texts(tokenizer, columns, maxlength, merge)
-            collator = DataCollatorForLanguageModeling(tokenizer, pad_to_multiple_of=8 if fp16 else None)
+            collator = transformers.DataCollatorForLanguageModeling(tokenizer, pad_to_multiple_of=8 if fp16 else None)
         elif task == "question-answering":
             process = Questions(tokenizer, columns, maxlength, stride)
         elif task == "sequence-sequence":
             process = Sequences(tokenizer, columns, maxlength, prefix)
-            collator = DataCollatorForSeq2Seq(tokenizer, pad_to_multiple_of=8 if fp16 else None)
+            collator = transformers.DataCollatorForSeq2Seq(tokenizer, pad_to_multiple_of=8 if fp16 else None)
         else:
             process = Labels(tokenizer, columns, maxlength)
             labels = process.labels(train)
@@ -267,22 +257,24 @@ class HFTrainer(Tensors):
         if isinstance(base, (list, tuple)) and not isinstance(base[0], str):
             return base[0]
         if task == "language-generation":
-            return AutoModelForCausalLM.from_pretrained(base, config=config, quantization_config=quantization)
+            return transformers.AutoModelForCausalLM.from_pretrained(base, config=config, quantization_config=quantization)
         if task == "language-modeling":
-            return AutoModelForMaskedLM.from_pretrained(base, config=config, quantization_config=quantization)
+            return transformers.AutoModelForMaskedLM.from_pretrained(base, config=config, quantization_config=quantization)
         if task == "question-answering":
-            return AutoModelForQuestionAnswering.from_pretrained(base, config=config, quantization_config=quantization)
+            return transformers.AutoModelForQuestionAnswering.from_pretrained(base, config=config, quantization_config=quantization)
         if task == "sequence-sequence":
-            return AutoModelForSeq2SeqLM.from_pretrained(base, config=config, quantization_config=quantization)
+            return transformers.AutoModelForSeq2SeqLM.from_pretrained(base, config=config, quantization_config=quantization)
         if task == "token-detection":
             return TokenDetection(
-                AutoModelForMaskedLM.from_pretrained(base, config=config, quantization_config=quantization, attn_implementation="eager"),
-                AutoModelForPreTraining.from_pretrained(base, config=config, quantization_config=quantization, attn_implementation="eager"),
+                transformers.AutoModelForMaskedLM.from_pretrained(base, config=config, quantization_config=quantization, attn_implementation="eager"),
+                transformers.AutoModelForPreTraining.from_pretrained(
+                    base, config=config, quantization_config=quantization, attn_implementation="eager"
+                ),
                 tokenizer,
             )
 
         # Default task
-        return AutoModelForSequenceClassification.from_pretrained(base, config=config, quantization_config=quantization)
+        return transformers.AutoModelForSequenceClassification.from_pretrained(base, config=config, quantization_config=quantization)
 
     def quantization(self, quantize):
         """

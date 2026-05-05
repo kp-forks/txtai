@@ -6,13 +6,14 @@ import json
 import os
 
 from huggingface_hub.errors import HFValidationError
-from transformers.utils import cached_file
 
 from .base import Pooling
 from .cls import ClsPooling
 from .last import LastPooling
 from .late import LatePooling
 from .mean import MeanPooling
+
+from ...util import Download
 
 
 class PoolingFactory:
@@ -141,7 +142,7 @@ class PoolingFactory:
         # Download file and parse JSON
         config = None
         try:
-            path = cached_file(path_or_repo_id=path, filename=name)
+            path = Download()(path, name)
             if path:
                 with open(path, encoding="utf-8") as f:
                     config = json.load(f)

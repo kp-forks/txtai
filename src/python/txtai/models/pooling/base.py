@@ -7,16 +7,15 @@ import json
 import numpy as np
 
 from huggingface_hub.errors import HFValidationError
-from transformers.utils import cached_file
 
 from ..models import Models
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import Download, TransformersLib
 
-torchlib = TorchLib()
-torch = torchlib.torch()
-Module = torchlib.module()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
+Module = transformerslib.module()
 
 
 class Pooling(Module):
@@ -173,7 +172,7 @@ class Pooling(Module):
         # Download file and parse JSON
         config = None
         try:
-            path = cached_file(path_or_repo_id=path, filename=name)
+            path = Download()(path, name)
             if path:
                 with open(path, encoding="utf-8") as f:
                     config = json.load(f)

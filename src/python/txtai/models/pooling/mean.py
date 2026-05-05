@@ -4,10 +4,10 @@ Mean module
 
 from .base import Pooling
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import TransformersLib
 
-torch = TorchLib().torch()
+torch = TransformersLib().torch()
 
 
 class MeanPooling(Pooling):

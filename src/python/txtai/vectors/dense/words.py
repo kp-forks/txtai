@@ -12,7 +12,6 @@ from multiprocessing import Pool
 import numpy as np
 
 from huggingface_hub.errors import HFValidationError
-from transformers.utils import cached_file
 
 # Conditional import
 try:
@@ -23,6 +22,7 @@ except ImportError:
     STATICVECTORS = False
 
 from ...pipeline import Tokenizer
+from ...util import Download
 
 from ..base import Vectors
 
@@ -92,7 +92,7 @@ class WordVectors(Vectors):
 
         try:
             # Download file and parse JSON
-            path = cached_file(path_or_repo_id=path, filename="config.json")
+            path = Download()(path, "config.json")
             if path:
                 with open(path, encoding="utf-8") as f:
                     config = json.load(f)

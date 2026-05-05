@@ -8,10 +8,10 @@ import types
 
 import numpy as np
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import TransformersLib
 
-torch = TorchLib().torch()
+torch = TransformersLib().torch()
 
 # Logging configuration
 logger = logging.getLogger(__name__)

@@ -4,14 +4,17 @@ Hugging Face module
 
 from threading import Thread
 
-from transformers import AutoModelForImageTextToText, TextIteratorStreamer
-
 from ...models import Models
 
 from ..hfmodel import HFModel
 from ..hfpipeline import HFPipeline
 
 from .generation import Generation
+
+from ...util import TransformersLib
+
+# Conditional import
+transformers = TransformersLib().transformers()
 
 
 class HFGeneration(Generation):
@@ -112,7 +115,7 @@ class HFLLM(HFPipeline):
             True if this is a vision model
         """
 
-        return isinstance(self.pipeline.model, AutoModelForImageTextToText)
+        return isinstance(self.pipeline.model, transformers.AutoModelForImageTextToText)
 
     def parameters(self, texts, maxlength, workers, stop, **kwargs):
         """
@@ -228,7 +231,7 @@ class StreamingResponse:
 
     def __init__(self, pipeline, texts, stop, **kwargs):
         # Create streamer
-        self.stream = TextIteratorStreamer(pipeline.tokenizer, skip_prompt=True, skip_special_tokens=True, timeout=5)
+        self.stream = transformers.TextIteratorStreamer(pipeline.tokenizer, skip_prompt=True, skip_special_tokens=True, timeout=5)
         kwargs["streamer"] = self.stream
         kwargs["stop_strings"] = stop
 

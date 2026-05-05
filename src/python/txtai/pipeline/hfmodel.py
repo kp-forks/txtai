@@ -2,10 +2,13 @@
 Hugging Face Transformers model wrapper module
 """
 
-from transformers import AutoTokenizer
-
 from ..models import Models
+from ..util import TransformersLib
+
 from .tensors import Tensors
+
+# Conditional transformers import
+transformers = TransformersLib().transformers()
 
 
 class HFModel(Tensors):
@@ -61,7 +64,7 @@ class HFModel(Tensors):
         model = self.prepare(model)
 
         # Load tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(tokenizer) if isinstance(tokenizer, str) else tokenizer
+        tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer) if isinstance(tokenizer, str) else tokenizer
 
         return model, tokenizer
 

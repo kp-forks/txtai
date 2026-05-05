@@ -2,8 +2,10 @@
 Registry module
 """
 
-from transformers import AutoModel, AutoModelForQuestionAnswering, AutoModelForSequenceClassification
-from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING
+# Conditional imports
+from ..util import TransformersLib
+
+transformers = TransformersLib().transformers()
 
 
 class Registry:
@@ -29,9 +31,10 @@ class Registry:
             model.__class__.config_class = config
 
         # Add references for this class to supported AutoModel classes
-        for mapping in [AutoModel, AutoModelForQuestionAnswering, AutoModelForSequenceClassification]:
+        for mapping in [transformers.AutoModel, transformers.AutoModelForQuestionAnswering, transformers.AutoModelForSequenceClassification]:
             mapping.register(config, model.__class__)
 
         # Add references for this class to support pipeline AutoTokenizers
-        if hasattr(model, "config") and type(model.config) not in TOKENIZER_MAPPING:
-            TOKENIZER_MAPPING.register(type(model.config), type(model.config).__name__)
+        mappings = transformers.models.auto.tokenization_auto.TOKENIZER_MAPPING
+        if hasattr(model, "config") and type(model.config) not in mappings:
+            mappings.register(type(model.config), type(model.config).__name__)

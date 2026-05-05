@@ -7,10 +7,10 @@ import numpy as np
 from ...models import Models, PoolingFactory
 from ..base import Pipeline
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import TransformersLib
 
-torch = TorchLib().torch()
+torch = TransformersLib().torch()
 
 
 class LateEncoder(Pipeline):

@@ -4,8 +4,6 @@ LiteLLM module
 
 import numpy as np
 
-from transformers.utils import cached_file
-
 # Conditional import
 try:
     import litellm as api
@@ -13,6 +11,8 @@ try:
     LITELLM = True
 except ImportError:
     LITELLM = False
+
+from ...util import Download
 
 from ..base import Vectors
 
@@ -63,7 +63,7 @@ class LiteLLM(Vectors):
 
         # pylint: disable=W0702
         try:
-            return cached_file(path_or_repo_id=path, filename="config.json") is not None if "/" in path else False
+            return Download()(path, "config.json") is not None if "/" in path else False
         except:
             return False
 

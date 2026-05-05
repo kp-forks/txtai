@@ -12,7 +12,7 @@ import numpy as np
 
 from huggingface_hub.errors import HFValidationError
 from txtai.vectors import VectorsFactory
-from txtai.vectors.dense.words import create, transform
+from txtai.vectors.dense.words import create, transform, WordVectors
 
 
 class TestWordVectors(unittest.TestCase):
@@ -147,9 +147,12 @@ class TestWordVectors(unittest.TestCase):
         Test loading model that doesn't exist
         """
 
-        # Test non-existent path raises an exception
+        # Test non-existent local path raises an exception
         with self.assertRaises((IOError, HFValidationError)):
             VectorsFactory.create({"method": "words", "path": os.path.join(tempfile.gettempdir(), "noexist")}, None)
+
+        # Test non-existent hub path is handled properly
+        self.assertFalse(WordVectors.ismodel("invalid/user/noexist"))
 
     def testTransform(self):
         """

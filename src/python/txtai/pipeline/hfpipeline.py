@@ -4,12 +4,14 @@ Hugging Face Transformers pipeline wrapper module
 
 import inspect
 
-from transformers import pipeline
 
 from ..models import Models
-from ..util import Resolver
+from ..util import Resolver, TransformersLib
 
 from .tensors import Tensors
+
+# Conditional imports
+transformers = TransformersLib().transformers()
 
 
 class HFPipeline(Tensors):
@@ -51,9 +53,9 @@ class HFPipeline(Tensors):
                 # Load model
                 model = Models.load(path[0], config, task)
 
-                self.pipeline = pipeline(task, model=model, tokenizer=path[1], device=device, model_kwargs=modelargs, **kwargs)
+                self.pipeline = transformers.pipeline(task, model=model, tokenizer=path[1], device=device, model_kwargs=modelargs, **kwargs)
             else:
-                self.pipeline = pipeline(task, model=path, device=device, model_kwargs=modelargs, **kwargs)
+                self.pipeline = transformers.pipeline(task, model=path, device=device, model_kwargs=modelargs, **kwargs)
 
             # Model quantization. Compresses model to int8 precision, improves runtime performance. Only supported on CPU.
             if deviceid == -1 and quantize:
@@ -75,7 +77,7 @@ class HFPipeline(Tensors):
         """
 
         # Get pipeline method arguments
-        args = inspect.getfullargspec(pipeline).args
+        args = inspect.getfullargspec(transformers.pipeline).args
 
         # Resolve torch dtype, if necessary
         dtype = kwargs.get("dtype")

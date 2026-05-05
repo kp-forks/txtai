@@ -5,16 +5,15 @@ Late module
 import numpy as np
 
 from safetensors import safe_open
-from transformers.utils import cached_file
 
 from .base import Pooling
 from .muvera import Muvera
 
-# Conditional torch imports
-from ...util import TorchLib
+# Conditional imports
+from ...util import Download, TransformersLib
 
-torchlib = TorchLib()
-torch = torchlib.torch()
+transformerslib = TransformersLib()
+torch = transformerslib.torch()
 
 
 class LatePooling(Pooling):
@@ -44,7 +43,7 @@ class LatePooling(Pooling):
         self.qprefix, self.qlength, self.dprefix, self.dlength = self.settings(path, config)
 
         # Load linear layer
-        path = cached_file(path_or_repo_id=path, filename=name)
+        path = Download()(path, name)
         with safe_open(filename=path, framework="pt") as f:
             weights = f.get_tensor("linear.weight")
 
