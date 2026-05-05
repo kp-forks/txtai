@@ -146,7 +146,7 @@ The [txtai build workflow](https://github.com/neuml/txtai/blob/master/.github/wo
 
 ## CPU-only
 
-The default install adds PyTorch with GPU support. There are a number of dependencies that come with that. When running in a CPU-only environment or using Embeddings/LLM models without PyTorch (i.e. llama.cpp or API services), the CPU-only PyTorch package can be installed with txtai as follows.
+The default install adds PyTorch with GPU support. There are a number of dependencies that come with that. When running in a CPU-only environment, the CPU-only PyTorch package can be installed with txtai as follows.
 
 ```
 pip install txtai torch==[version]+cpu \
@@ -172,6 +172,22 @@ A [community-supported txtai package](https://anaconda.org/conda-forge/txtai) is
 ```
 conda install -c conda-forge txtai
 ```
+
+## Minimal install
+
+A lightweight minimal install package is available. This is helpful if `torch` or `faiss-cpu` has issues, is too heavy or there is no intention to use those libraries.
+
+All the same extras mentioned above are available in this version of the package.
+
+```
+# Lightweight minimal install
+pip install txtai_minimal
+
+# Same as standard `txtai` install
+pip install txtai_minimal[default]
+```
+
+Note that in order to use the `Embeddings` or `LLM` interface without `torch` requires either `llama.cpp` or `litellm`.
 
 ## Run with containers
 

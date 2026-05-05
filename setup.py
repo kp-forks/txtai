@@ -1,18 +1,36 @@
-# pylint: disable = C0111
+# pylint: disable = C0103,C0111
+import os
+
 from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as f:
     # Remove GitHub dark mode images
     DESCRIPTION = "".join([line for line in f if "gh-dark-mode-only" not in line])
 
-# Default dependencies
-install = ["faiss-cpu>=1.7.1.post2", "msgpack>=1.0.7", "torch>=2.4", "transformers>=4.56.2"]
+# Required dependencies
+install = ["transformers>=4.56.2"]
 
-# Default dependencies that are also base transformers dependencies
+# Required dependencies that are also base transformers dependencies
 install += ["huggingface-hub>=0.34.0", "numpy>=1.18.4", "pyyaml>=5.3", "regex>=2022.8.17", "safetensors>=0.4.5"]
+
+# Default dependencies
+default = ["faiss-cpu>=1.7.1.post2", "msgpack>=1.0.7", "torch>=2.4"]
 
 # Optional dependencies
 extras = {}
+
+# Package name
+package = "txtai"
+
+if os.getenv("MINIMAL"):
+    # Add default extra
+    extras["default"] = default
+
+    # Rename this package to have minimal suffix
+    package += "_minimal"
+else:
+    # Default dependencies are required with standard install
+    install += default
 
 # Development dependencies - not included in "all" install
 extras["dev"] = [
@@ -139,7 +157,7 @@ extras["all"] = (
 )
 
 setup(
-    name="txtai",
+    name=package,
     version="9.9.0",
     author="NeuML",
     description="All-in-one open-source AI framework for semantic search, LLM orchestration and language model workflows",
