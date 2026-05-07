@@ -37,7 +37,7 @@ class Faiss(ANN):
         super().__init__(config)
 
         if not FAISS:
-            raise ImportError('Faiss is not available - install "ann" extra to enable')
+            raise ImportError("Faiss is not available - install faiss-cpu to enable")
 
         # Scalar quantization
         quantize = self.config.get("quantize")

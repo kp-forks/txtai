@@ -2,9 +2,12 @@
 Skill imports
 """
 
-import yaml
-
 from smolagents import Tool
+
+# Conditional imports
+from ...util import TransformersLib
+
+yaml = TransformersLib().yaml()
 
 
 class SkillTool(Tool):

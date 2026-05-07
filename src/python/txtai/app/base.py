@@ -7,12 +7,15 @@ import os
 from multiprocessing.pool import ThreadPool
 from threading import RLock
 
-import yaml
-
 from ..agent import Agent
 from ..embeddings import Documents, Embeddings
 from ..pipeline import PipelineFactory
 from ..workflow import WorkflowFactory
+
+# Conditional imports
+from ..util import TransformersLib
+
+yaml = TransformersLib().yaml()
 
 
 # pylint: disable=R0904

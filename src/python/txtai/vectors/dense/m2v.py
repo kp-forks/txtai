@@ -4,8 +4,6 @@ Model2Vec module
 
 import json
 
-from huggingface_hub.errors import HFValidationError
-
 # Conditional import
 try:
     from model2vec import StaticModel
@@ -14,7 +12,7 @@ try:
 except ImportError:
     MODEL2VEC = False
 
-from ...util import Download
+from ...util import Download, DownloadError
 from ..base import Vectors
 
 
@@ -44,7 +42,7 @@ class Model2Vec(Vectors):
                     return config.get("model_type") == "model2vec"
 
         # Ignore this error - invalid repo or directory
-        except (HFValidationError, OSError):
+        except DownloadError:
             pass
 
         return False

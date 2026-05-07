@@ -9,6 +9,7 @@ import unittest
 
 from unittest.mock import patch
 
+from huggingface_hub import hf_hub_download
 from txtai.cloud import Cloud
 from txtai.embeddings import Embeddings
 
@@ -107,8 +108,16 @@ class TestCloud(unittest.TestCase):
             if "Invalid" in kwargs["repo_id"]:
                 raise FileNotFoundError
 
-            # Return either .gitattributes file or index
-            return attributes if kwargs["filename"] == ".gitattributes" else index
+            # Check for .gitattributes file
+            if kwargs["filename"] == ".gitattributes":
+                return attributes
+
+            # Check for cloud index path
+            if any(kwargs["filename"] == x for x in paths):
+                return index
+
+            # Use original method for all other requests
+            return hf_hub_download(**kwargs)
 
         # Patch write methods since token will not be available
         create.return_value = None
@@ -130,7 +139,8 @@ class TestCloud(unittest.TestCase):
             attributes = tmp.name
 
         # Run tests with uncompressed and compressed index
-        for path in [f"cloud.{provider}", f"cloud.{provider}.tar.gz"]:
+        paths = [f"cloud.{provider}", f"cloud.{provider}.tar.gz"]
+        for path in paths:
             self.runTests(path, {"provider": provider, "container": "neuml/txtai-intro"})
 
     def runTests(self, path, cloud):

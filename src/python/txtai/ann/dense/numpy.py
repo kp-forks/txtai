@@ -4,12 +4,14 @@ NumPy module
 
 import numpy as np
 
-from safetensors import safe_open
-from safetensors.numpy import save_file
-
 from ...serialize import SerializeFactory
 
 from ..base import ANN
+
+# Conditional imports
+from ...util import TransformersLib
+
+safetensors = TransformersLib().safetensors()
 
 
 class NumPy(ANN):
@@ -157,7 +159,7 @@ class NumPy(ANN):
         """
 
         # Merge metadata and tensors into single dictionary
-        with safe_open(path, framework="np") as f:
+        with safetensors.safe_open(path, framework="np") as f:
             return {**(f.metadata() if f.metadata() else {}), **{k: f.get_tensor(k) for k in f.keys()}}
 
     def savesafetensors(self, data, path, metadata=None):
@@ -170,7 +172,7 @@ class NumPy(ANN):
             metadata: additional metadata to save
         """
 
-        save_file(data, path, metadata)
+        safetensors.numpy.save_file(data, path, metadata)
 
     def hammingscore(self, queries):
         """

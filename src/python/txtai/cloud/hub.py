@@ -5,11 +5,12 @@ Hugging Face Hub module
 import os
 import tempfile
 
-import huggingface_hub
-
-from huggingface_hub.utils import RepositoryNotFoundError
-
 from .base import Cloud
+
+# Conditional imports
+from ..util import TransformersLib
+
+huggingface_hub = TransformersLib().huggingface_hub()
 
 
 class HuggingFaceHub(Cloud):
@@ -30,11 +31,11 @@ class HuggingFaceHub(Cloud):
             # Otherwise return repository metadata
             return huggingface_hub.model_info(repo_id=self.config["container"], revision=self.config.get("revision"), token=self.config.get("token"))
 
-        except RepositoryNotFoundError:
+        except huggingface_hub.utils.RepositoryNotFoundError:
             return None
 
     def load(self, path=None):
-        # Download archvie file and return local path
+        # Download archive file and return local path
         if self.isarchive(path):
             return huggingface_hub.hf_hub_download(
                 repo_id=self.config["container"],

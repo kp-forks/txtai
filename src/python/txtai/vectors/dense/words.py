@@ -11,8 +11,6 @@ from multiprocessing import Pool
 
 import numpy as np
 
-from huggingface_hub.errors import HFValidationError
-
 # Conditional import
 try:
     from staticvectors import Database, StaticVectors
@@ -22,7 +20,7 @@ except ImportError:
     STATICVECTORS = False
 
 from ...pipeline import Tokenizer
-from ...util import Download
+from ...util import Download, DownloadError
 
 from ..base import Vectors
 
@@ -99,7 +97,7 @@ class WordVectors(Vectors):
                     return config.get("model_type") == "staticvectors"
 
         # Ignore this error - invalid repo or directory
-        except (HFValidationError, OSError):
+        except DownloadError:
             pass
 
         return False

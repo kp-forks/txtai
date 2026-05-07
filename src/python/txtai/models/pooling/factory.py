@@ -5,15 +5,13 @@ Factory module
 import json
 import os
 
-from huggingface_hub.errors import HFValidationError
-
 from .base import Pooling
 from .cls import ClsPooling
 from .last import LastPooling
 from .late import LatePooling
 from .mean import MeanPooling
 
-from ...util import Download
+from ...util import Download, DownloadError
 
 
 class PoolingFactory:
@@ -148,7 +146,7 @@ class PoolingFactory:
                     config = json.load(f)
 
         # Ignore this error - invalid repo or directory
-        except (HFValidationError, OSError):
+        except DownloadError:
             pass
 
         return config

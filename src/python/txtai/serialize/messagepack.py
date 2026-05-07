@@ -26,7 +26,7 @@ class MessagePack(Serialize):
         super().__init__()
 
         if not MSGPACK:
-            raise ImportError("MessagePack is not available - install to msgpack enable")
+            raise ImportError("MessagePack is not available - install msgpack to enable")
 
         # Streaming unpacker
         self.streaming = streaming

@@ -20,20 +20,17 @@ import logging
 
 from io import BytesIO
 
-import yaml
-
 import numpy as np
-
-from huggingface_hub.errors import HFValidationError
 
 from ..base import Pipeline
 
 # Conditional imports
-from ...util import Download, TransformersLib
+from ...util import Download, DownloadError, TransformersLib
 
 transformerslib = TransformersLib()
 torch = transformerslib.torch()
 transformers = transformerslib.transformers()
+yaml = transformerslib.yaml()
 
 # Logging configuration
 logger = logging.getLogger(__name__)
@@ -136,7 +133,7 @@ class TextToSpeech(Pipeline):
         try:
             # Check if file exists
             exists = Download()(path, name) is not None
-        except (HFValidationError, OSError):
+        except DownloadError:
             return False
 
         return exists

@@ -21,6 +21,10 @@ class TestTransformers(unittest.TestCase):
         """
 
         modules = [
+            "huggingface_hub",
+            "huggingface_hub.errors",
+            "regex",
+            "safetensors",
             "transformers",
             "transformers.configuration_utils",
             "transformers.modeling_utils",
@@ -29,6 +33,7 @@ class TestTransformers(unittest.TestCase):
             "torch.nn",
             "torch.onnx",
             "torch.utils.data",
+            "yaml",
         ]
 
         # Get handle to all currently loaded txtai modules
@@ -65,18 +70,29 @@ class TestTransformers(unittest.TestCase):
         Test transformers not installed
         """
 
+        # pylint: disable=W0106
         from txtai.util import TransformersLib
 
         lib = TransformersLib()
 
         # Test transformers stubs
-        for x in [lib.arguments(), lib.config(), lib.dataset(), lib.module(), lib.model()]:
+        for x in [lib.arguments(), lib.config(), lib.dataset(), lib.hferror(), lib.module(), lib.model()]:
             self.assertTrue(x.__module__.endswith("transformerslib"))
 
-        # pylint: disable=W0106
+        with self.assertRaises(ImportError):
+            lib.huggingface_hub().hf_hub_download
+
+        with self.assertRaises(ImportError):
+            lib.regex().compile
+
+        with self.assertRaises(ImportError):
+            lib.safetensors().safe_open
+
+        with self.assertRaises(ImportError):
+            lib.torch().device
+
         with self.assertRaises(ImportError):
             lib.transformers().AutoModel
 
-        # pylint: disable=W0106
         with self.assertRaises(ImportError):
-            lib.torch().device
+            lib.yaml().safe_open

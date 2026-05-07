@@ -4,7 +4,12 @@ Download module
 
 import os
 
-from huggingface_hub import hf_hub_download
+# Conditional imports
+from .transformerslib import TransformersLib
+
+transformerslib = TransformersLib()
+huggingface_hub = transformerslib.huggingface_hub()
+HFValidationError = transformerslib.hferror()
 
 
 class Download:
@@ -18,7 +23,7 @@ class Download:
 
         Args:
             path: model path or repo
-            name: file name to load
+            name: file name
 
         Returns:
             local cached model path, if available
@@ -40,5 +45,15 @@ class Download:
             path, name = "/".join(parts[:repo]), "/".join(parts[repo:])
 
         # Download (if necessary) and return local file path
-        local = os.path.join(path, name)
-        return local if os.path.exists(local) else hf_hub_download(repo_id=path, filename=name)
+        try:
+            local = os.path.join(path, name)
+            return local if os.path.exists(local) else huggingface_hub.hf_hub_download(repo_id=path, filename=name)
+
+        except (HFValidationError, OSError) as e:
+            raise DownloadError(f"Error locating file with parameters: path={path}, name={name}") from e
+
+
+class DownloadError(Exception):
+    """
+    Exception raised when a local or remote file path is not valid.
+    """

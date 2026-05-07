@@ -10,10 +10,8 @@ try:
 except ImportError:
     GLINER = False
 
-from huggingface_hub.errors import HFValidationError
-
 from ...models import Models
-from ...util import Download
+from ...util import Download, DownloadError
 
 from ..hfpipeline import HFPipeline
 
@@ -90,7 +88,7 @@ class Entity(HFPipeline):
             return Download()(path, "gliner_config.json") is not None
 
         # Ignore this error - invalid repo or directory
-        except (HFValidationError, OSError):
+        except DownloadError:
             pass
 
         return False

@@ -5,9 +5,12 @@ Tokenizer module
 import re
 import string
 
-import regex
-
 from ..base import Pipeline
+
+# Conditional imports
+from ...util import TransformersLib
+
+regex = TransformersLib().regex()
 
 
 class Tokenizer(Pipeline):

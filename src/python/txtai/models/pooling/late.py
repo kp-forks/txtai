@@ -4,8 +4,6 @@ Late module
 
 import numpy as np
 
-from safetensors import safe_open
-
 from .base import Pooling
 from .muvera import Muvera
 
@@ -13,6 +11,7 @@ from .muvera import Muvera
 from ...util import Download, TransformersLib
 
 transformerslib = TransformersLib()
+safetensors = transformerslib.safetensors()
 torch = transformerslib.torch()
 
 
@@ -44,7 +43,7 @@ class LatePooling(Pooling):
 
         # Load linear layer
         path = Download()(path, name)
-        with safe_open(filename=path, framework="pt") as f:
+        with safetensors.safe_open(filename=path, framework="pt") as f:
             weights = f.get_tensor("linear.weight")
 
             # Load weights into linear layer

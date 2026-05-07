@@ -6,12 +6,10 @@ import json
 
 import numpy as np
 
-from huggingface_hub.errors import HFValidationError
-
 from ..models import Models
 
 # Conditional imports
-from ...util import Download, TransformersLib
+from ...util import Download, DownloadError, TransformersLib
 
 transformerslib = TransformersLib()
 torch = transformerslib.torch()
@@ -178,7 +176,7 @@ class Pooling(Module):
                     config = json.load(f)
 
         # Ignore this error - invalid repo or directory
-        except (HFValidationError, OSError):
+        except DownloadError:
             pass
 
         return config

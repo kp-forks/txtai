@@ -11,7 +11,7 @@ class TransformersLib:
 
     def arguments(self):
         """
-        Imports transformers.TrainingArguments
+        Imports transformers.TrainingArguments.
         """
 
         try:
@@ -66,6 +66,48 @@ class TransformersLib:
 
         return Dataset
 
+    def hferror(self):
+        """
+        Import huggingface_hub.errors.HFValidationError.
+        """
+
+        try:
+            from huggingface_hub.errors import HFValidationError
+
+        except ImportError:
+
+            class HFValidationError(Exception):
+                """
+                Stub for HFValidationError
+                """
+
+        return HFValidationError
+
+    def huggingface_hub(self):
+        """
+        Imports huggingface_hub.
+
+        Returns:
+            torch
+        """
+
+        try:
+            import huggingface_hub
+
+        except ImportError:
+
+            class HuggingFaceHub:
+                """
+                Stub for HuggingFaceHub
+                """
+
+                def __getattr__(self, name):
+                    raise ImportError("Hugging Face Hub is not installed, install huggingface-hub to use this module")
+
+            huggingface_hub = HuggingFaceHub()
+
+        return huggingface_hub
+
     def model(self):
         """
         Imports transformers.modeling_utils.PreTrainedModel.
@@ -88,7 +130,7 @@ class TransformersLib:
 
     def module(self):
         """
-        Imports torch.nn.Module
+        Imports torch.nn.Module.
 
         Returns:
             Module
@@ -108,6 +150,56 @@ class TransformersLib:
                 """
 
         return Module
+
+    def regex(self):
+        """
+        Imports regex.
+
+        Returns:
+            regex
+        """
+
+        try:
+            import regex
+
+        except ImportError:
+
+            class Regex:
+                """
+                Stub for Regex
+                """
+
+                def __getattr__(self, name):
+                    raise ImportError("Regex is not installed, install regex to use this module")
+
+            regex = Regex()
+
+        return regex
+
+    def safetensors(self):
+        """
+        Imports safetensors.
+
+        Returns:
+            safetensors
+        """
+
+        try:
+            import safetensors
+
+        except ImportError:
+
+            class Safetensors:
+                """
+                Stub for Safetensors
+                """
+
+                def __getattr__(self, name):
+                    raise ImportError("Safetensors is not installed, install safetensors to use this module")
+
+            safetensors = Safetensors()
+
+        return safetensors
 
     def torch(self):
         """
@@ -158,3 +250,28 @@ class TransformersLib:
             transformers = Transformers()
 
         return transformers
+
+    def yaml(self):
+        """
+        Imports yaml.
+
+        Returns:
+            yaml
+        """
+
+        try:
+            import yaml
+
+        except ImportError:
+
+            class YAML:
+                """
+                Stub for yaml
+                """
+
+                def __getattr__(self, name):
+                    raise ImportError("PyYAML is not installed, install pyyaml to use this module")
+
+            yaml = YAML()
+
+        return yaml
