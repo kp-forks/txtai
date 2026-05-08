@@ -6,6 +6,7 @@ from ...util import Resolver
 
 from .huggingface import HFGeneration
 from .litellm import LiteLLM
+from .litert import LiteRT
 from .llama import LlamaCpp
 from .opencode import OpenCode
 
@@ -32,6 +33,10 @@ class GenerationFactory:
         # LiteLLM generation
         if method == "litellm":
             return LiteLLM(path, **kwargs)
+
+        # LiteRT generation
+        if method == "litert":
+            return LiteRT(path, **kwargs)
 
         # llama.cpp generation
         if method == "llama.cpp":
@@ -64,6 +69,8 @@ class GenerationFactory:
         if not method:
             if LiteLLM.ismodel(path):
                 method = "litellm"
+            elif LiteRT.ismodel(path):
+                method = "litert"
             elif LlamaCpp.ismodel(path):
                 method = "llama.cpp"
             elif OpenCode.ismodel(path):

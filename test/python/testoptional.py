@@ -40,6 +40,7 @@ class TestOptional(unittest.TestCase):
             "imagehash",
             "libcloud.storage.providers",
             "litellm",
+            "litert_lm",
             "llama_cpp",
             "model2vec",
             "msgpack",
@@ -233,6 +234,7 @@ class TestOptional(unittest.TestCase):
             HTMLToMarkdown,
             ImageHash,
             LiteLLM,
+            LiteRT,
             LlamaCpp,
             Microphone,
             MLOnnx,
@@ -278,6 +280,9 @@ class TestOptional(unittest.TestCase):
 
         with self.assertRaises(ImportError):
             LiteLLM("huggingface/t5-small")
+
+        with self.assertRaises(ImportError):
+            LiteRT("litert-community/SmolLM2-360M-Instruct/SmolLM2_360M_instruct.litertlm")
 
         with self.assertRaises(ImportError):
             LlamaCpp("TheBloke/TinyLlama-1.1B-Chat-v0.3-GGUF/tinyllama-1.1b-chat-v0.3.Q2_K.gguf")
