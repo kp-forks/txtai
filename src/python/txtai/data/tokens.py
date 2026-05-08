@@ -2,10 +2,10 @@
 Tokens module
 """
 
-# Conditional imports
-from ..util import TransformersLib
+# Core library imports
+from ..util import Library
 
-Dataset = TransformersLib().dataset()
+Dataset = Library().dataset()
 
 
 class Tokens(Dataset):

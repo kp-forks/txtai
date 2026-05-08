@@ -2,8 +2,6 @@
 SparseArray module
 """
 
-import numpy as np
-
 # Conditional import
 try:
     from scipy.sparse import csr_matrix
@@ -11,6 +9,11 @@ try:
     SCIPY = True
 except ImportError:
     SCIPY = False
+
+# Core library imports
+from .library import Library
+
+np = Library().numpy()
 
 
 class SparseArray:

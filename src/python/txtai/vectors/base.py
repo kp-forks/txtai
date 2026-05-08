@@ -7,11 +7,14 @@ import os
 import tempfile
 import uuid
 
-import numpy as np
-
 from ..pipeline import Tokenizer
 
 from .recovery import Recovery
+
+# Core library imports
+from ..util import Library
+
+np = Library().numpy()
 
 
 class Vectors:

@@ -2,17 +2,16 @@
 Late module
 """
 
-import numpy as np
-
 from .base import Pooling
 from .muvera import Muvera
 
-# Conditional imports
-from ...util import Download, TransformersLib
+# Core library imports
+from ...util import Download, Library
 
-transformerslib = TransformersLib()
-safetensors = transformerslib.safetensors()
-torch = transformerslib.torch()
+library = Library()
+np = library.numpy()
+safetensors = library.safetensors()
+torch = library.torch()
 
 
 class LatePooling(Pooling):

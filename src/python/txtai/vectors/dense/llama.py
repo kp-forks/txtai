@@ -4,8 +4,6 @@ Llama module
 
 import os
 
-import numpy as np
-
 # Conditional import
 try:
     import llama_cpp as llama
@@ -14,9 +12,12 @@ try:
 except ImportError:
     LLAMA_CPP = False
 
-from ...util import Download
+from ...util import Download, Library
 
 from ..base import Vectors
+
+# Core library imports
+np = Library().numpy()
 
 
 class LlamaCpp(Vectors):

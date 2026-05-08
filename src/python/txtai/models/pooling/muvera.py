@@ -2,7 +2,10 @@
 Muvera module
 """
 
-import numpy as np
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class Muvera:

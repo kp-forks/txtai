@@ -2,8 +2,6 @@
 LiteLLM module
 """
 
-import numpy as np
-
 # Conditional import
 try:
     import litellm as api
@@ -12,9 +10,12 @@ try:
 except ImportError:
     LITELLM = False
 
-from ...util import Download
+from ...util import Download, Library
 
 from ..base import Vectors
+
+# Core library imports
+np = Library().numpy()
 
 
 class LiteLLM(Vectors):

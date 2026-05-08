@@ -10,18 +10,17 @@ try:
 except ImportError:
     ONNX_RUNTIME = False
 
-import numpy as np
-
 from .registry import Registry
 
-# Conditional imports
-from ..util import TransformersLib
+# Core library imports
+from ..util import Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-transformers = transformerslib.transformers()
-PretrainedConfig = transformerslib.config()
-PreTrainedModel = transformerslib.model()
+library = Library()
+np = library.numpy()
+torch = library.torch()
+transformers = library.transformers()
+PretrainedConfig = library.config()
+PreTrainedModel = library.model()
 
 
 # pylint: disable=W0223

@@ -4,8 +4,6 @@ PGVector module
 
 import os
 
-import numpy as np
-
 # Conditional import
 try:
     from pgvector.sqlalchemy import BIT, HALFVEC, VECTOR
@@ -19,6 +17,11 @@ except ImportError:
     PGVECTOR = False
 
 from ..base import ANN
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 # pylint: disable=R0904

@@ -2,8 +2,6 @@
 ImageHash module
 """
 
-import numpy as np
-
 # Conditional import
 try:
     from PIL import Image
@@ -14,6 +12,11 @@ except ImportError:
     PIL = False
 
 from ..base import Pipeline
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class ImageHash(Pipeline):

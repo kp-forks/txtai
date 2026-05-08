@@ -2,8 +2,6 @@
 HNSW module
 """
 
-import numpy as np
-
 # Conditional import
 try:
     # pylint: disable=E0611
@@ -14,6 +12,11 @@ except ImportError:
     HNSWLIB = False
 
 from ..base import ANN
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class HNSW(ANN):

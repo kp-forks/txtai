@@ -2,16 +2,16 @@
 NumPy module
 """
 
-import numpy as np
-
 from ...serialize import SerializeFactory
 
 from ..base import ANN
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-safetensors = TransformersLib().safetensors()
+library = Library()
+np = library.numpy()
+safetensors = library.safetensors()
 
 
 class NumPy(ANN):

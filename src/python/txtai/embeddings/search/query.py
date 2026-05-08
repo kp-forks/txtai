@@ -2,10 +2,10 @@
 Query module
 """
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-transformers = TransformersLib().transformers()
+transformers = Library().transformers()
 
 
 class Query:

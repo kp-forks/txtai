@@ -2,8 +2,6 @@
 PyTorch module
 """
 
-import numpy as np
-
 try:
     from bitsandbytes import matmul_4bit
     from bitsandbytes.functional import (
@@ -22,10 +20,12 @@ except ImportError:
 
 from .numpy import NumPy
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-torch = TransformersLib().torch()
+library = Library()
+np = library.numpy()
+torch = library.torch()
 
 
 class Torch(NumPy):

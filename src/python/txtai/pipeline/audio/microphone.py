@@ -4,8 +4,6 @@ Microphone module
 
 import logging
 
-import numpy as np
-
 # Conditional import
 try:
     import sounddevice as sd
@@ -20,6 +18,11 @@ except (ImportError, OSError):
     MICROPHONE = False
 
 from ..base import Pipeline
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 # Logging configuration
 logger = logging.getLogger(__name__)

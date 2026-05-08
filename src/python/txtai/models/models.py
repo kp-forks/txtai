@@ -7,11 +7,11 @@ import os
 from .onnx import OnnxModel
 
 # Conditional imports
-from ..util import TransformersLib
+from ..util import Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-transformers = transformerslib.transformers()
+library = Library()
+torch = library.torch()
+transformers = library.transformers()
 
 
 class Models:

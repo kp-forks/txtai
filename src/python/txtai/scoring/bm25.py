@@ -2,9 +2,12 @@
 BM25 module
 """
 
-import numpy as np
-
 from .tfidf import TFIDF
+
+# Core library imports
+from ..util import Library
+
+np = Library().numpy()
 
 
 class BM25(TFIDF):

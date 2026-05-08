@@ -14,8 +14,6 @@ if platform.system() == "Darwin" or os.name == "nt":
     # Workaround for a Faiss issue with OMP: Error #15. See txtai FAQ for more.
     os.environ["KMP_DUPLICATE_LIB_OK"] = os.environ.get("KMP_DUPLICATE_LIB_OK", "TRUE")
 
-import numpy as np
-
 # Conditional import
 try:
     from faiss import index_factory, IO_FLAG_MMAP, METRIC_INNER_PRODUCT, read_index, write_index
@@ -26,6 +24,11 @@ except ImportError:
     FAISS = False
 
 from ..base import ANN
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class Faiss(ANN):

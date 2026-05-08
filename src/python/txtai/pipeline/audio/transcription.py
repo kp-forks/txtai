@@ -2,8 +2,6 @@
 Transcription module
 """
 
-import numpy as np
-
 # Conditional import
 try:
     import soundfile as sf
@@ -15,6 +13,11 @@ except (ImportError, OSError):
     TRANSCRIPTION = False
 
 from ..hfpipeline import HFPipeline
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class Transcription(HFPipeline):

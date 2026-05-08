@@ -2,8 +2,6 @@
 Signal module
 """
 
-import numpy as np
-
 # Conditional import
 try:
     from scipy import signal
@@ -12,6 +10,11 @@ try:
     SCIPY = True
 except ImportError:
     SCIPY = False
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class Signal:

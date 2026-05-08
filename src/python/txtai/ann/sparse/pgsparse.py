@@ -4,8 +4,6 @@ PGSparse module
 
 import os
 
-import numpy as np
-
 # Conditional import
 try:
     from pgvector import SparseVector
@@ -16,6 +14,11 @@ except ImportError:
     PGSPARSE = False
 
 from ..dense import PGVector
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class PGSparse(PGVector):

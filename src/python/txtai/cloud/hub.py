@@ -7,10 +7,10 @@ import tempfile
 
 from .base import Cloud
 
-# Conditional imports
-from ..util import TransformersLib
+# Core library imports
+from ..util import Library
 
-huggingface_hub = TransformersLib().huggingface_hub()
+huggingface_hub = Library().huggingface_hub()
 
 
 class HuggingFaceHub(Cloud):

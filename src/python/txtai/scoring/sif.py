@@ -2,9 +2,12 @@
 SIF module
 """
 
-import numpy as np
-
 from .tfidf import TFIDF
+
+# Core library imports
+from ..util import Library
+
+np = Library().numpy()
 
 
 class SIF(TFIDF):

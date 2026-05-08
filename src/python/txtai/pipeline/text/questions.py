@@ -4,10 +4,10 @@ Questions module
 
 from ..hfmodel import HFModel
 
-# Conditional torch imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-torch = TransformersLib().torch()
+torch = Library().torch()
 
 
 class Questions(HFModel):

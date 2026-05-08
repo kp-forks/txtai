@@ -1,12 +1,12 @@
 """
-TransformersLib module
+Library module
 """
 
 
 # pylint: disable=C0415
-class TransformersLib:
+class Library:
     """
-    Imports transformers and dependencies with fallbacks when the library is not installed.
+    Imports core but optional dependencies with fallbacks when the library is not installed.
     """
 
     def arguments(self):
@@ -150,6 +150,31 @@ class TransformersLib:
                 """
 
         return Module
+
+    def numpy(self):
+        """
+        Imports numpy.
+
+        Returns:
+            numpy
+        """
+
+        try:
+            import numpy
+
+        except ImportError:
+
+            class NumPy:
+                """
+                Stub for NumPy
+                """
+
+                def __getattr__(self, name):
+                    raise ImportError("NumPy is not installed, install numpy to use this module")
+
+            numpy = NumPy()
+
+        return numpy
 
     def regex(self):
         """

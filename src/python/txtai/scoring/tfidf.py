@@ -8,14 +8,17 @@ import os
 from collections import Counter
 from multiprocessing.pool import ThreadPool
 
-import numpy as np
-
 from ..pipeline import Tokenizer
 from ..serialize import Serializer
 
 from .base import Scoring
 from .normalize import Normalize
 from .terms import Terms
+
+# Core library imports
+from ..util import Library
+
+np = Library().numpy()
 
 
 class TFIDF(Scoring):

@@ -2,9 +2,12 @@
 CrossEncoder module
 """
 
-import numpy as np
-
 from ..hfpipeline import HFPipeline
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class CrossEncoder(HFPipeline):

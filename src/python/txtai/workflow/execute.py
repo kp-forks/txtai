@@ -4,10 +4,10 @@ Execute module
 
 from multiprocessing.pool import Pool, ThreadPool
 
-# Conditional imports
-from ..util import TransformersLib
+# Core library imports
+from ..util import Library
 
-torch = TransformersLib().torch()
+torch = Library().torch()
 
 
 class Execute:

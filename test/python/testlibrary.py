@@ -1,5 +1,5 @@
 """
-Transformers module tests
+Library module tests
 """
 
 import sys
@@ -9,20 +9,21 @@ import unittest
 import txtai
 
 
-class TestTransformers(unittest.TestCase):
+class TestLibrary(unittest.TestCase):
     """
-    Simulates transformers not being installed.
+    Simulates core libraries not being installed.
     """
 
     @classmethod
     def setUpClass(cls):
         """
-        Simulate transformers not being installed
+        Simulates core libraries not being installed
         """
 
         modules = [
             "huggingface_hub",
             "huggingface_hub.errors",
+            "numpy",
             "regex",
             "safetensors",
             "transformers",
@@ -65,22 +66,25 @@ class TestTransformers(unittest.TestCase):
             else:
                 del sys.modules[key]
 
-    def testTransformers(self):
+    def testLibrary(self):
         """
-        Test transformers not installed
+        Test core libraries not being installed
         """
 
         # pylint: disable=W0106
-        from txtai.util import TransformersLib
+        from txtai.util import Library
 
-        lib = TransformersLib()
+        lib = Library()
 
         # Test transformers stubs
         for x in [lib.arguments(), lib.config(), lib.dataset(), lib.hferror(), lib.module(), lib.model()]:
-            self.assertTrue(x.__module__.endswith("transformerslib"))
+            self.assertTrue(x.__module__.endswith("library"))
 
         with self.assertRaises(ImportError):
             lib.huggingface_hub().hf_hub_download
+
+        with self.assertRaises(ImportError):
+            lib.numpy().dot
 
         with self.assertRaises(ImportError):
             lib.regex().compile

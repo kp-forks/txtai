@@ -7,10 +7,10 @@ import string
 
 from ..base import Pipeline
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-regex = TransformersLib().regex()
+regex = Library().regex()
 
 
 class Tokenizer(Pipeline):

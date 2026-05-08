@@ -4,12 +4,12 @@ Download module
 
 import os
 
-# Conditional imports
-from .transformerslib import TransformersLib
+# Core library imports
+from .library import Library
 
-transformerslib = TransformersLib()
-huggingface_hub = transformerslib.huggingface_hub()
-HFValidationError = transformerslib.hferror()
+library = Library()
+huggingface_hub = library.huggingface_hub()
+HFValidationError = library.hferror()
 
 
 class Download:

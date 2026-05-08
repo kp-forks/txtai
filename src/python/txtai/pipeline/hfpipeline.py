@@ -6,12 +6,12 @@ import inspect
 
 
 from ..models import Models
-from ..util import Resolver, TransformersLib
+from ..util import Library, Resolver
 
 from .tensors import Tensors
 
-# Conditional imports
-transformers = TransformersLib().transformers()
+# Core library imports
+transformers = Library().transformers()
 
 
 class HFPipeline(Tensors):

@@ -6,12 +6,12 @@ import logging
 import re
 import types
 
-import numpy as np
+# Core library imports
+from ...util import Library
 
-# Conditional imports
-from ...util import TransformersLib
-
-torch = TransformersLib().torch()
+library = Library()
+np = library.numpy()
+torch = library.torch()
 
 # Logging configuration
 logger = logging.getLogger(__name__)

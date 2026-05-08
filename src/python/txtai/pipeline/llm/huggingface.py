@@ -11,10 +11,10 @@ from ..hfpipeline import HFPipeline
 
 from .generation import Generation
 
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-# Conditional import
-transformers = TransformersLib().transformers()
+transformers = Library().transformers()
 
 
 class HFGeneration(Generation):

@@ -12,10 +12,10 @@ from ..embeddings import Documents, Embeddings
 from ..pipeline import PipelineFactory
 from ..workflow import WorkflowFactory
 
-# Conditional imports
-from ..util import TransformersLib
+# Core library imports
+from ..util import Library
 
-yaml = TransformersLib().yaml()
+yaml = Library().yaml()
 
 
 # pylint: disable=R0904

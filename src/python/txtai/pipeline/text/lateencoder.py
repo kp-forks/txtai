@@ -2,15 +2,15 @@
 Late encoder module
 """
 
-import numpy as np
-
 from ...models import Models, PoolingFactory
 from ..base import Pipeline
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-torch = TransformersLib().torch()
+library = Library()
+np = library.numpy()
+torch = library.torch()
 
 
 class LateEncoder(Pipeline):

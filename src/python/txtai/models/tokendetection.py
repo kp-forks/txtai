@@ -5,12 +5,12 @@ Token Detection module
 import inspect
 import os
 
-# Conditional imports
-from ..util import TransformersLib
+# Core library imports
+from ..util import Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-PreTrainedModel = transformerslib.model()
+library = Library()
+torch = library.torch()
+PreTrainedModel = library.model()
 
 
 class TokenDetection(PreTrainedModel):

@@ -13,10 +13,10 @@ except ImportError:
 from ...models import Models
 from ..hfmodel import HFModel
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-huggingface_hub = TransformersLib().huggingface_hub()
+huggingface_hub = Library().huggingface_hub()
 
 
 class Translation(HFModel):

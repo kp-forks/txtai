@@ -20,17 +20,16 @@ import logging
 
 from io import BytesIO
 
-import numpy as np
-
 from ..base import Pipeline
 
-# Conditional imports
-from ...util import Download, DownloadError, TransformersLib
+# Core library imports
+from ...util import Download, DownloadError, Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-transformers = transformerslib.transformers()
-yaml = transformerslib.yaml()
+library = Library()
+np = library.numpy()
+torch = library.torch()
+transformers = library.transformers()
+yaml = library.yaml()
 
 # Logging configuration
 logger = logging.getLogger(__name__)

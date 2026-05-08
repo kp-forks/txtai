@@ -4,11 +4,12 @@ External module
 
 import types
 
-import numpy as np
-
-from ...util import Resolver
+from ...util import Library, Resolver
 
 from ..base import Vectors
+
+# Core library imports
+np = Library().numpy()
 
 
 class External(Vectors):

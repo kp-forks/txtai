@@ -7,8 +7,6 @@ import os
 
 from multiprocessing.pool import ThreadPool
 
-import numpy as np
-
 # Conditional import
 try:
     from scipy.sparse import csr_matrix, vstack
@@ -22,8 +20,11 @@ except ImportError:
     IVFSPARSE = False
 
 from ...serialize import SerializeFactory
-from ...util import SparseArray
+from ...util import Library, SparseArray
 from ..base import ANN
+
+# Core library imports
+np = Library().numpy()
 
 
 class IVFSparse(ANN):

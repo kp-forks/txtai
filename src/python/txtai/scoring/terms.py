@@ -12,7 +12,10 @@ from array import array
 from collections import Counter
 from threading import RLock
 
-import numpy as np
+# Core library imports
+from ..util import Library
+
+np = Library().numpy()
 
 # Logging configuration
 logger = logging.getLogger(__name__)

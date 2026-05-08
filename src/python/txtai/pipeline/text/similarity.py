@@ -2,11 +2,14 @@
 Similarity module
 """
 
-import numpy as np
-
 from .crossencoder import CrossEncoder
 from .labels import Labels
 from .lateencoder import LateEncoder
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class Similarity(Labels):

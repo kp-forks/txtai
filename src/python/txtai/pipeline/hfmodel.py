@@ -3,12 +3,12 @@ Hugging Face Transformers model wrapper module
 """
 
 from ..models import Models
-from ..util import TransformersLib
+from ..util import Library
 
 from .tensors import Tensors
 
-# Conditional transformers import
-transformers = TransformersLib().transformers()
+# Core library imports
+transformers = Library().transformers()
 
 
 class HFModel(Tensors):

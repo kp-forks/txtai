@@ -2,9 +2,12 @@
 Transform module
 """
 
-import numpy as np
-
 from .action import Action
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class Transform:

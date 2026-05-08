@@ -18,13 +18,13 @@ except ImportError:
 from ...models import PoolingFactory
 from ..tensors import Tensors
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-transformers = transformerslib.transformers()
-Module = transformerslib.module()
+library = Library()
+torch = library.torch()
+transformers = library.transformers()
+Module = library.module()
 
 
 class HFOnnx(Tensors):

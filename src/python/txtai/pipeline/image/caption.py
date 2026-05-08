@@ -12,10 +12,10 @@ except ImportError:
 
 from ..hfmodel import HFModel
 
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-# Conditional imports
-transformers = TransformersLib().transformers()
+transformers = Library().transformers()
 
 
 class Caption(HFModel):

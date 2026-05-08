@@ -8,13 +8,14 @@ with open("README.md", "r", encoding="utf-8") as f:
     DESCRIPTION = "".join([line for line in f if "gh-dark-mode-only" not in line])
 
 # Required dependencies
-install = ["numpy>=1.18.4"]
+install = []
 
 # Default dependencies
 default = [
     "faiss-cpu>=1.7.1.post2",
     "huggingface-hub>=0.34.0",
     "msgpack>=1.0.7",
+    "numpy>=1.18.4",
     "regex>=2022.8.17",
     "pyyaml>=5.3",
     "safetensors>=0.4.5",

@@ -5,8 +5,6 @@ GGML module
 import ctypes
 import os
 
-import numpy as np
-
 # Conditional import
 try:
     import ggml
@@ -17,6 +15,11 @@ except ImportError:
     LIBGGML = False
 
 from ..base import ANN
+
+# Core library imports
+from ...util import Library
+
+np = Library().numpy()
 
 
 class GGML(ANN):

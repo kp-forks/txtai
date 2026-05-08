@@ -20,13 +20,13 @@ from ...data import Labels, Questions, Sequences, Texts
 from ...models import Models, TokenDetection
 from ..tensors import Tensors
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-transformers = transformerslib.transformers()
-HFTrainingArguments = transformerslib.arguments()
+library = Library()
+torch = library.torch()
+transformers = library.transformers()
+HFTrainingArguments = library.arguments()
 
 
 class HFTrainer(Tensors):

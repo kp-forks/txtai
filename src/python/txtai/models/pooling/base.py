@@ -4,16 +4,15 @@ Pooling module
 
 import json
 
-import numpy as np
-
 from ..models import Models
 
-# Conditional imports
-from ...util import Download, DownloadError, TransformersLib
+# Core library imports
+from ...util import Download, DownloadError, Library
 
-transformerslib = TransformersLib()
-torch = transformerslib.torch()
-Module = transformerslib.module()
+library = Library()
+np = library.numpy()
+torch = library.torch()
+Module = library.module()
 
 
 class Pooling(Module):

@@ -4,10 +4,10 @@ Skill imports
 
 from smolagents import Tool
 
-# Conditional imports
-from ...util import TransformersLib
+# Core library imports
+from ...util import Library
 
-yaml = TransformersLib().yaml()
+yaml = Library().yaml()
 
 
 class SkillTool(Tool):

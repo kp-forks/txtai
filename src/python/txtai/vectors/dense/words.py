@@ -9,8 +9,6 @@ import tempfile
 
 from multiprocessing import Pool
 
-import numpy as np
-
 # Conditional import
 try:
     from staticvectors import Database, StaticVectors
@@ -20,9 +18,12 @@ except ImportError:
     STATICVECTORS = False
 
 from ...pipeline import Tokenizer
-from ...util import Download, DownloadError
+from ...util import Download, DownloadError, Library
 
 from ..base import Vectors
+
+# Core library imports
+np = Library().numpy()
 
 # Logging configuration
 logger = logging.getLogger(__name__)
