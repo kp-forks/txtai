@@ -130,7 +130,7 @@ Additional environment specific prerequisites are below.
 
 ### Linux
 
-The AudioStream and Microphone pipelines require the [PortAudio](https://python-sounddevice.readthedocs.io/en/0.5.0/installation.html) system library. The Transcription pipeline requires the [SoundFile](https://github.com/bastibe/python-soundfile#installation) system library.
+The AudioStream and Microphone pipelines require the [PortAudio](https://python-sounddevice.readthedocs.io/en/0.5.0/installation.html) system library. The Transcription pipeline requires the [SoundFile](https://github.com/bastibe/python-soundfile#installation) system library. The LiteRT LLM pipeline requires libegl1 and libgles2.
 
 ### macOS
 
@@ -175,7 +175,7 @@ conda install -c conda-forge txtai
 
 ## Minimal install
 
-A lightweight minimal install package is available. This is helpful if `torch` or `faiss-cpu` has issues, is too heavy or there is no intention to use those libraries.
+A lightweight zero dependency minimal install package is available. This is helpful if the default libraries are too heavy or there are no plans to use them.
 
 All the same extras mentioned above are available in this version of the package.
 
@@ -187,7 +187,7 @@ pip install txtai_minimal
 pip install txtai_minimal[default]
 ```
 
-Note that in order to use the `Embeddings` or `LLM` interface without `torch` requires either `llama.cpp` or `litellm`.
+Note that in order to use the `Embeddings` or `LLM` interface without `torch` requires either `llama.cpp`, `litellm` or `litert`.
 
 ## Run with containers
 

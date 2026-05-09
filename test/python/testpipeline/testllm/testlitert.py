@@ -2,6 +2,7 @@
 LiteRT module tests
 """
 
+import os
 import unittest
 
 from txtai.pipeline import LLM
@@ -12,6 +13,7 @@ class TestLiteRT(unittest.TestCase):
     LiteRT tests.
     """
 
+    @unittest.skipIf(os.name == "nt", "testGeneration skipped on Windows")
     def testGeneration(self):
         """
         Test generation with LiteRT
