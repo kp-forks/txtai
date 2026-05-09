@@ -18,7 +18,7 @@ class TestLiteRT(unittest.TestCase):
         """
 
         # Test model generation with LiteRT
-        model = LLM("litert-community/SmolLM2-360M-Instruct/SmolLM2_360M_instruct.litertlm")
+        model = LLM("litert-community/gemma-4-E2B-it-litert-lm/gemma-4-E2B-it.litertlm")
 
         # Test standard
         self.assertIsNotNone(model("Hello"))
