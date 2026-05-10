@@ -83,7 +83,7 @@ class LiteRT(Generation):
             return litert_lm.Engine(
                 path,
                 backend=litert_lm.Backend.GPU if gpu else litert_lm.Backend.CPU,
-                enable_speculative_decoding=gpu,
+                enable_speculative_decoding=kwargs.get("mtp", gpu),
                 max_num_tokens=kwargs.get("maxlength"),
             )
 

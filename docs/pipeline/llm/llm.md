@@ -63,9 +63,14 @@ The LLM pipeline automatically detects the underlying LLM framework. This can al
 - [Hugging Face Transformers](https://github.com/huggingface/transformers)
 - [llama.cpp](https://github.com/abetlen/llama-cpp-python)
 - [LLM APIs via LiteLLM](https://github.com/BerriAI/litellm)
+- [LiteRT-LM](https://ai.google.dev/edge/litert-lm)
 - [OpenCode server](https://github.com/anomalyco/opencode)
 
-`llama.cpp` models support both local and remote GGUF paths on the HF Hub. See the [LiteLLM documentation](https://litellm.vercel.app/docs/providers) for the options available with LiteLLM models. See the [OpenCode documentation](https://opencode.ai/docs/server/) for more on how to integrate the LLM pipeline with a running OpenCode instance.
+`llama.cpp` and `LiteRT-LM` support both local and remote file paths on the HF Hub.
+
+See the [LiteLLM documentation](https://litellm.vercel.app/docs/providers) for the options available with LiteLLM models.
+
+See the [OpenCode documentation](https://opencode.ai/docs/server/) for more on how to integrate the LLM pipeline with a running OpenCode instance.
 
 ```python
 from txtai import LLM
@@ -82,6 +87,15 @@ llm = LLM("unsloth/gpt-oss-20b-GGUF/gpt-oss-20b-Q4_K_M.gguf",
 # LiteLLM
 llm = LLM("ollama/gpt-oss")
 llm = LLM("ollama/gpt-oss", method="litellm")
+
+# LiteRT-LM
+llm = LLM(
+  "litert-community/gemma-4-E2B-it-litert-lm/gemma-4-E2B-it.litertlm"
+)
+llm = LLM(
+  "litert-community/gemma-4-E2B-it-litert-lm/gemma-4-E2B-it.litertlm",
+  method="litert"
+)
 
 # Custom Ollama endpoint
 llm = LLM("ollama/gpt-oss", api_base="http://localhost:11434")

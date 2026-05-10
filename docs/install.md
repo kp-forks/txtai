@@ -130,7 +130,11 @@ Additional environment specific prerequisites are below.
 
 ### Linux
 
-The AudioStream and Microphone pipelines require the [PortAudio](https://python-sounddevice.readthedocs.io/en/0.5.0/installation.html) system library. The Transcription pipeline requires the [SoundFile](https://github.com/bastibe/python-soundfile#installation) system library. The LiteRT LLM pipeline requires libegl1 and libgles2.
+The AudioStream and Microphone pipelines require the [PortAudio](https://python-sounddevice.readthedocs.io/en/0.5.0/installation.html) system library.
+
+The Transcription pipeline requires the [SoundFile](https://github.com/bastibe/python-soundfile#installation) system library.
+
+The LiteRT LLM pipeline requires libegl1, libgles2 and libvulkan1.
 
 ### macOS
 
